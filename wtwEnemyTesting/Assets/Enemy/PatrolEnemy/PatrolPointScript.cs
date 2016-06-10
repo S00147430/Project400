@@ -24,7 +24,7 @@ public class PatrolPointScript : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "patrolTypeA") //As long as the points are tagged correctly, and were added correctly in the Inspector, this should work.
+        if(other.tag == "patrolEnemyTypeA") //As long as the points are tagged correctly, and were added correctly in the Inspector, this should work.
         {
             if (this.tag == "patrolPointA")
             {
