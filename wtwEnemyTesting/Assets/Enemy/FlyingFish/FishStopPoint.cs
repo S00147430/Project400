@@ -3,6 +3,8 @@ using System.Collections;
 
 public class FishStopPoint : MonoBehaviour {
 
+    //Requires accurate tagging in order to work correctly, patrolPoints A and B, A being the START and B being the APEX//
+
 	// Use this for initialization
 	void Start () {
 	

@@ -17,7 +17,7 @@ public class FlyingFish : BaseEnemy {
     //Transform currentDestination;
     public enum FishState { START, TRANSITION, APEX }
     public FishState current;
-    bool lastApex;
+    bool lastApex;//bool to determine if it's last stop was the apex or not
     float hangTime;
     float toA;
     float toB;

@@ -13,7 +13,7 @@ public class MonkeyEnemy : BaseEnemy {
     */
 
     float pauseTime;
-    float rollingSpeedMul;
+    public float RollingSpeedMultiplier = 2.0f;
     //Monkeys only appear in the psuedo 2D sections, meaning they should only be moving along the x-axis. Meaning I only need one input for the vector.
     public float MonkeyVectorX;
     Vector3 monkeyVector;
@@ -31,7 +31,6 @@ public class MonkeyEnemy : BaseEnemy {
 	void Start ()
     {
         pauseTime = 2.0f; // 2 seconds for now
-        rollingSpeedMul = 2.0f;
         current = MonkeyStates.NORMAL;
         #region Setting up vectors
         monkeyVector = Vector3.zero;
@@ -45,7 +44,7 @@ public class MonkeyEnemy : BaseEnemy {
         #endregion Setting up vectors
 
         if (MonkeyVectorX > 0)
-        {//keep in mind that, when looking down the Z-Axis, Increasing X moves to the LEFT. So a positive X value input meansan intention to move to the left 
+        {//keep in mind that, when looking down the Z-Axis, Increasing X moves to the LEFT. So a positive X value input means an intention to move to the left 
             starting = MonkeyStartingState.RIGHT; //If X (The intended direction) is more than zero, monkey starts on the right and rolls to the left
         }
 
@@ -63,7 +62,7 @@ public class MonkeyEnemy : BaseEnemy {
         if(pauseTime <= 0)
         {
             current = MonkeyStates.ROLLING;
-            transform.position += monkeyVector * rollingSpeedMul * Time.deltaTime;
+            transform.position += monkeyVector * RollingSpeedMultiplier * Time.deltaTime;
 
             switch(starting)
             {
@@ -82,9 +81,10 @@ public class MonkeyEnemy : BaseEnemy {
                         transform.position = monkeyDestinationPos;
                         pauseTime += 2.0f;
                         current = MonkeyStates.NORMAL;
-                        monkeyVector.x = MonkeyVectorX * -1; //(this is to make him roll the other way next time)
+                        monkeyVector.x = MonkeyVectorX * -1; //(this is to make him roll the other way)
                     }
                     break;
+
                 case MonkeyStartingState.RIGHT:
                     Debug.Log("Detected: RIGHT");
                     if (transform.position.x < monkeyOriginalXPos)

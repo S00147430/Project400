@@ -17,7 +17,7 @@ public class PatrolEnemy : BaseEnemy
 	void Start ()
     {
         //if nav mesh is baked properly, and the enemy is set up properly in the inspector, character will move towards PointA. Otherwise, nothing happens, character stands still, debug notice is sent out.
-        if (AIController.tag == "patrolEnemyTypeA" /*Crab, Turtle, etc.*/)//Note to self:If I make another patrol type enemy, remember to make provisions for their tags
+        if (AIController.tag == "patrolEnemyTypeA" /*Crab, Turtle, etc.*/)//Note to self:If I make another patrol type enemy, remember to make provisions for their tags. (.Contains() works)
             goodToGo = true;
 
         if (goodToGo == true)
@@ -30,7 +30,8 @@ public class PatrolEnemy : BaseEnemy
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
         //if (gameObject.transform == PointA)
         //    AIController.GetComponent<AICharacterControl>().target = PointB;
         //if (gameObject.transform == PointB)

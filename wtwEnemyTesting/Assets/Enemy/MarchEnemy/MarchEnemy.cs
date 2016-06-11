@@ -40,28 +40,31 @@ public class MarchEnemy : BaseEnemy {
     public float CustomVectorZ = 0; // Values are assigned in the inspector, set to 0 here for safety
     Vector3 CustomVector;
     public float SpeedMultiplier; // Movement is relatively slow, if more speed is required, set SpeedMultiplier to a value greater than 1.0f
-    
+    bool hasBeenSeen;
+    Renderer marchEnemyRenderer;
 
 	void Start ()
     {
         //now I just need a way to keep him from doing anything until the camera sees/renders him
         //harder than I though it would be to get that info and, conversely, do something with it
-        //marchEnemyRenderer = GetComponent<Renderer>();
+        marchEnemyRenderer = GetComponent<Renderer>();
 
         CustomVector.x = CustomVectorX;
         CustomVector.y = CustomVectorY;
         CustomVector.z = CustomVectorZ;
-        transform.position += CustomVector;
-
-
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        if (gameObject.GetComponent<Renderer>().isVisible) // this .isVisible bool was harder to get ahold of than necessary. I was using an outdated method of calling Renderer that no longer works, apparently.
+        if (marchEnemyRenderer.isVisible) // this .isVisible bool was harder to get ahold of than necessary. I was using an outdated method of calling Renderer that no longer works, apparently.
         {
-            transform.position += CustomVector * Time.deltaTime;
+            hasBeenSeen = true;
+        }
+
+        if (hasBeenSeen) //only needs to be seen once. begins moving regardless if the player continues to observe or not.
+        {
+            transform.position += CustomVector * Time.deltaTime * SpeedMultiplier;
         }
         // *Should* move the character along the vector. Whether it will behave in the manner I expect will be determined during testing.
         // Update: Moves forward at ridiculous speed. * Time.deltaTime added.
