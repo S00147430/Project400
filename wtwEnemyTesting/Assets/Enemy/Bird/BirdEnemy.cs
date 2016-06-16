@@ -22,6 +22,7 @@ public class BirdEnemy : BaseEnemy {
     //float hangTime;
     float toA;
     float toB;
+    public float SpeedMultiplier;
     //Point B must be the Apex of the jump
 
 	void Start ()
@@ -49,11 +50,11 @@ public class BirdEnemy : BaseEnemy {
         {
             if(lastApex == false)
             {
-                transform.position += (new Vector3(0, toB)) * Time.deltaTime * 0.8f;
+                transform.position += (new Vector3(0, toB)) * Time.deltaTime * SpeedMultiplier;
             }
             else if (lastApex == true)
             {
-                transform.position += (new Vector3(0, toA)) * Time.deltaTime * 0.8f;
+                transform.position += (new Vector3(0, toA)) * Time.deltaTime * SpeedMultiplier;
             }
             Debug.Log("In TRANSITION");
             
