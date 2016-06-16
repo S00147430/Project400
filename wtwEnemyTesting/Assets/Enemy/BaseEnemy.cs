@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class BaseEnemy : MonoBehaviour {
-    //public bool IsInvincible = false; This should be covered by the isimmune bools. Keeping it in just in case I'm forgetting a special case or whatever
+    public bool IsInvincible = false; //bool for rolling stone and similar enemies that do not react in any way to crash. Different to being immune to jump and spin attack, in that it prevents movement response.
     public bool IsImmuneJump = false;
     public bool IsImmuneSpin = false;
     public bool IsDead = false;// Note: This value is temporary, and just so future testing of death mechanics can be performed.
