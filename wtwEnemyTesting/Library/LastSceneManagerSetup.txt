@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/EnemyTestBlobScene.unity
+- path: Assets/Scenes/EnemyLizardmanTest.unity
   isLoaded: 1
   isActive: 1
