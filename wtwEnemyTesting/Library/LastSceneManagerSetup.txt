@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/EnemyLizardmanTest.unity
+- path: Assets/Scenes/EnemyRotateTest.unity
   isLoaded: 1
   isActive: 1

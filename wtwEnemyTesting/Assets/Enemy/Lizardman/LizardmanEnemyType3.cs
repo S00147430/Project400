@@ -24,12 +24,12 @@ public class LizardmanEnemyType3 : BaseEnemy
         lastTarget = stopPoints[currentStopPoint];
         target = stopPoints[currentStopPoint + 1];
         SetTargetVector();
-
         if (lastTarget.tag == "lizardManLandPoint")
         {
             timerSet = true;
             pauseTime = 1.0f;
         }
+
         else if (lastTarget.tag == "lizardManJumpPoint")
         {
             timerSet = false;
@@ -57,6 +57,7 @@ public class LizardmanEnemyType3 : BaseEnemy
 
     public void SetTarget(GameObject stopPoint)
     {
+        Debug.Log("Target Set From " + stopPoint.name);
         if(currentDirection == Direction.FORWARD)
         {
             if(stopPoint.tag == "lizardManLandPoint")
@@ -71,6 +72,10 @@ public class LizardmanEnemyType3 : BaseEnemy
 
         if (currentDirection == Direction.BACKWARD)
         {
+            if (stopPoint.tag == "lizardManLandPoint")
+            {
+                timerSet = true;
+            }
             currentStopPoint -= 1;
             lastTarget = stopPoints[currentStopPoint];
             target = stopPoints[currentStopPoint - 1];
@@ -80,6 +85,7 @@ public class LizardmanEnemyType3 : BaseEnemy
 
     public void SetTargetTurnAround(GameObject stopPoint)
     {
+        Debug.Log("Direction changed from " + stopPoint.name);
         previousDirection = currentDirection;
         if(currentDirection == Direction.FORWARD && previousDirection == Direction.FORWARD)
         {
@@ -110,7 +116,7 @@ public class LizardmanEnemyType3 : BaseEnemy
 
     public bool RetrieveIfLastTarget(GameObject targetCollided)
     {
-        if (lastTarget = targetCollided)
+        if (lastTarget == targetCollided)
             return true;
         else
             return false;
