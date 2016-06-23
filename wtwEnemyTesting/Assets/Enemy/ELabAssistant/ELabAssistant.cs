@@ -7,6 +7,7 @@ public class ELabAssistant : BaseEnemy
     Vector3 targetVector;
     float distance;
     public float range;
+    public float speed;
     float shieldTime;
     float shieldDownTime;
     enum ShieldStates { ACTIVE, INACTIVE }
@@ -29,7 +30,7 @@ public class ELabAssistant : BaseEnemy
                 shieldDownTime -= Time.deltaTime;
                 IsInvincible = false;
                 GetVector();
-                transform.position += targetVector;
+                transform.position += targetVector * Time.deltaTime * speed;
             }
 
             if (currentState == ShieldStates.ACTIVE)
@@ -42,12 +43,14 @@ public class ELabAssistant : BaseEnemy
             {
                 currentState = ShieldStates.INACTIVE;
                 ResetShieldTime();
+                Debug.Log("Shield deactivated");
             }
 
             if (shieldDownTime < 0)
             {
                 currentState = ShieldStates.ACTIVE;
                 ResetShieldDownTime();
+                Debug.Log("Shield activated");
             }
         }
 	}

@@ -62,4 +62,24 @@ public class RotateAimEnemy : BaseEnemy
         fakePosition = new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z);
         transform.LookAt(fakePosition);
     }
+
+    public void SetReadyToFire(bool readyOrNot)
+    {
+        readyToFire = readyOrNot;
+    }
+
+    public bool IsReadyToFire()
+    {
+        return readyToFire;
+    }
+
+    public bool IsWithinRange()
+    {
+        return withinRange;
+    }
+
+    public Vector3 ReturnTargetVector()
+    {
+        return target.transform.position - transform.position;
+    }
 }
