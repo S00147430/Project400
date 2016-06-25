@@ -3,20 +3,35 @@ using System.Collections;
 
 public class TestProjectile : MonoBehaviour
 {
-    Vector3 targetVector;
-    float speed;
+    public float speed;
+    public Vector3 direction;
+    float range;
+    //float delayTimer;
 	void Start ()
     {
         speed = 1.0f;
+        //delayTimer = 0.1f;
+        direction = Vector3.forward;
+        range = 20;
+        tag = "bullet1";
 	}
 	
 	void Update ()
     {
-	    if(targetVector != null)
+        transform.position += direction * Time.deltaTime * speed;
+
+        //if(targetVector == null)
+        //{
+        //    targetVector = GameObject.FindGameObjectWithTag("crash").transform.position - transform.position;
+        //}
+
+        //delayTimer -= Time.deltaTime;
+
+        if(Vector3.Distance(GameObject.FindGameObjectWithTag("crash").transform.position, transform.position) >= range)
         {
-            transform.position += targetVector * Time.deltaTime * speed;
+            Destroy(gameObject);
         }
-	}
+    }
 
     void OnCollisionEnter(Collision other)
     {
@@ -24,18 +39,16 @@ public class TestProjectile : MonoBehaviour
         if (other.gameObject.tag == "crash")
         {
             if(other.gameObject.GetComponent<TestCrash>().IsSpinning() == false)
+            {
                 other.gameObject.GetComponent<TestCrash>().Damaged(gameObject);
+                Destroy(gameObject);
+            }
             else
             {
                 //code to send the projectile off into the distance
-                transform.position += new Vector3(20, 5);
+                direction = new Vector3(20, 5);
             }
             
         }
-    }
-
-    public void SetVector(Vector3 inputVector)
-    {
-        targetVector = inputVector;
     }
 }

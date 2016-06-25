@@ -14,8 +14,10 @@ public class RotateAimEnemy : BaseEnemy
 
     Vector3 fakePosition; // A vector3 created with only the targets y value.
 
-	void Start ()
+	public virtual void Start ()
     {
+        base.Start();
+
         target = GameObject.FindGameObjectWithTag("crash");
 
         if (target == null)
@@ -28,10 +30,18 @@ public class RotateAimEnemy : BaseEnemy
         readyToFire = true;
 	}
 	
-	void Update ()
+	public virtual void Update ()
     {
-        distance = Vector3.Distance(transform.position, target.transform.position);
-	    if(distance <= range)
+        base.Update();
+        if(target != null)
+        {
+            distance = Vector3.Distance(transform.position, target.transform.position);
+        }
+        else
+        {
+            Debug.Log(name + " can't find Crash.");
+        }
+	    if(distance <= range && distance != 0)
         {
             withinRange = true;
         }

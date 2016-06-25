@@ -9,12 +9,13 @@ public class BaseEnemy : MonoBehaviour
     public bool IsDead = false;// Note: This value is temporary, and just so future testing of death mechanics can be performed.
     public int HitPoints;
     
-	void Start ()
+	public virtual void Start ()
     {
+
         HitPoints = 1; //All enemies have just the one, if I remember correctly. If not, the number is easily changed in the child classes
 	}
 	
-	void Update ()
+	public virtual void Update ()
     {
         if (HitPoints == 0)
             IsDead = true;
