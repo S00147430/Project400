@@ -11,7 +11,7 @@ public class TestProjectile : MonoBehaviour
     {
         speed = 1.0f;
         //delayTimer = 0.1f;
-        direction = Vector3.forward;
+        direction = GameObject.FindGameObjectWithTag("crash").transform.position - transform.position;
         range = 20;
         tag = "bullet1";
 	}
@@ -19,7 +19,7 @@ public class TestProjectile : MonoBehaviour
 	void Update ()
     {
         transform.position += direction * Time.deltaTime * speed;
-
+        transform.position += transform.up * Time.deltaTime * speed;
         //if(targetVector == null)
         //{
         //    targetVector = GameObject.FindGameObjectWithTag("crash").transform.position - transform.position;
@@ -27,7 +27,7 @@ public class TestProjectile : MonoBehaviour
 
         //delayTimer -= Time.deltaTime;
 
-        if(Vector3.Distance(GameObject.FindGameObjectWithTag("crash").transform.position, transform.position) >= range)
+        if (Vector3.Distance(GameObject.FindGameObjectWithTag("crash").transform.position, transform.position) >= range)
         {
             Destroy(gameObject);
         }

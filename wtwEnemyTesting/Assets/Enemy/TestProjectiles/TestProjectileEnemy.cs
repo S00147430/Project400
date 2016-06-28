@@ -63,7 +63,8 @@ public class TestProjectileEnemy : RotateAimEnemy
         TestProjectile bullet = (Instantiate(bullets, spawnPosition.position, Quaternion.identity) as TestProjectile);
         if(bullet != null)
         {
-            bullet.direction = spawnPosition.forward;
+            bullet.direction = ReturnTargetVector();
+            //this doesn't work because fuck me I guess
         }
     }
 }
