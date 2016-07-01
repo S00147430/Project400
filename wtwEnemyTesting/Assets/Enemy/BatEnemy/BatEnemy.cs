@@ -11,20 +11,26 @@ public class BatEnemy : BaseEnemy
         There's not much else that can be done without the player interaction. Bat is being pushed to the back of the queue.
      */
 
+    public Transform spawn;
     Vector3 spawnLocation;
-    public float spawnRelativeXValue; // relative to the bat location, not relative to the worldspace
+    //public float spawnRelativeXValue; // relative to the bat location, not relative to the worldspace
     public string ControllerName;
 
 	void Start ()
     {
-        spawnLocation = transform.position;
-        spawnLocation.x += spawnRelativeXValue;
-        spawnLocation.y += 1.0f;
+        base.Start();
+        spawnLocation = spawn.position;
 	}
 	
 	void Update ()
     {
+        base.Update();
 
+        if(IsDead == true)
+        {
+            GameObject.Find(ControllerName).GetComponent<BatController>().BatDied(this);
+            Destroy(gameObject);
+        }
 	}
 
     Vector3 SpawnLocation()

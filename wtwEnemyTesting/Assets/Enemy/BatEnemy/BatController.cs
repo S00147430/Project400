@@ -3,41 +3,46 @@ using System.Collections;
 
 public class BatController : MonoBehaviour
 {
-    public GameObject SpawnBatA;
-    public GameObject SpawnBatB;
+    public GameObject SpawnA;
+    public GameObject SpawnB;
+    public GameObject SentinelBatA;
+    public GameObject SentinelBatB;
 
     bool batAIsAlive;
     bool batBIsAlive;
 
 	void Start ()
     {
-        SpawnBatB.GetComponent<BatSpawner>().DisableSpawnReady();
+        SpawnB.GetComponent<BatSpawner>().DisableSpawnReady();
 	}
 	
 	void Update ()
     {
         if(CanSpawn() == true)
         {
-            if (SpawnBatA.GetComponent<BatSpawner>().ReturnSpawnReady() == true)
+            GameObject newBat;
+            if (SpawnA.GetComponent<BatSpawner>().ReturnSpawnReady() == true)
             {
-                Instantiate(SpawnBatA.GetComponent<BatSpawner>().BatPrefab);
+                newBat = Instantiate(SpawnA.GetComponent<BatSpawner>().BatPrefab, SpawnB.GetComponent<BatSpawner>().transform.position, SpawnB.GetComponent<BatSpawner>().transform.rotation) as GameObject;
+                newBat.GetComponent<BatSwarm>().InitializeBat(SpawnA.GetComponent<BatSpawner>());
             }
 
-            if (SpawnBatB.GetComponent<BatSpawner>().ReturnSpawnReady() == true)
+            if (SpawnB.GetComponent<BatSpawner>().ReturnSpawnReady() == true)
             {
-                Instantiate(SpawnBatB.GetComponent<BatSpawner>().BatPrefab, SpawnBatB.GetComponent<BatSpawner>().transform.position, SpawnBatB.GetComponent<BatSpawner>().transform.rotation);
+                newBat = Instantiate(SpawnB.GetComponent<BatSpawner>().BatPrefab, SpawnB.GetComponent<BatSpawner>().transform.position, SpawnB.GetComponent<BatSpawner>().transform.rotation) as GameObject;
+                newBat.GetComponent<BatSwarm>().InitializeBat(SpawnB.GetComponent<BatSpawner>());
             }
         } 
 	}
 
     Transform ReturnDestinationA()
     {
-        return SpawnBatA.transform;
+        return SpawnA.transform;
     }
 
     Transform ReturnDestinationB()
     {
-        return SpawnBatB.transform;
+        return SpawnB.transform;
     }
 
     bool CanSpawn()
@@ -48,6 +53,20 @@ public class BatController : MonoBehaviour
         }
         else
             return true;
+    }
+
+    public void BatDied(BatEnemy bat)
+    {
+        if (bat.name == SentinelBatA.name)
+        {
+            BatAIsDead();
+        }
+        else if (bat.name == SentinelBatB.name)
+        {
+            BatBIsDead();
+        }
+        else
+            Debug.Log("Unrecognised Sentinel Bat");
     }
 
     public void BatAIsDead()

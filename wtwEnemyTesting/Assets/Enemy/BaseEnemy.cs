@@ -11,7 +11,6 @@ public class BaseEnemy : MonoBehaviour
     
 	public virtual void Start ()
     {
-
         HitPoints = 1; //All enemies have just the one, if I remember correctly. If not, the number is easily changed in the child classes
 	}
 	
