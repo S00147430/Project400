@@ -14,7 +14,7 @@ public class Type2BatSpawner : MonoBehaviour
 	void Update ()
     {}
 
-    public void SpawnBat(Type2BatSwarmEnemy batToBeSpawned)
+    public void SpawnBat(GameObject batToBeSpawned)
     {
         Instantiate(batToBeSpawned, transform.position, Quaternion.identity);
         spawnReady = false;
@@ -25,9 +25,14 @@ public class Type2BatSpawner : MonoBehaviour
         return spawnReady;
     }
 
-    public void SpawnNotReady()
+    public void SetSpawnNotReady()
     {
         spawnReady = false;
+    }
+
+    public void SetSpawnReady()
+    {
+        spawnReady = true;
     }
 
     void OnTriggerEnter(Collider other)

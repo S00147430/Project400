@@ -15,6 +15,7 @@ public class Type2BatSwarmEnemy : BaseEnemy
     void Start ()
     {
         base.Start();
+        SetCurrentTarget(FirstBat.position);
 	}
 	
 	void Update ()
@@ -32,7 +33,7 @@ public class Type2BatSwarmEnemy : BaseEnemy
         if (FirstBatName == FirstBat.name)
         {
             reachedFirstBat = true;
-            currentTarget = LastBat.transform.position;
+            SetCurrentTarget(LastBat.position);
         }
     }
 
@@ -41,13 +42,13 @@ public class Type2BatSwarmEnemy : BaseEnemy
         if (LastBatName == LastBat.name)
         {
             reachedLastBat = true;
-            currentTarget = FinalSpawn.transform.position;
+            SetCurrentTarget(FinalSpawn.position);
         }
     }
 
     public void SetCurrentTarget(Vector3 target)
     {
-        currentTarget = target;
+        currentTarget = target - transform.position;
     }
 
     public bool IsDestinationSpawn(string SpawnName)
