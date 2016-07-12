@@ -12,6 +12,7 @@ public class RollingStoneEnemy : BaseEnemy {
 	// Use this for initialization
 	void Start ()
     {
+        base.Start();
         IsInvincible = true;
 	    if (VectorXValue > 0)
         {
@@ -28,6 +29,7 @@ public class RollingStoneEnemy : BaseEnemy {
     // Update is called once per frame
     void Update()
     {
+        base.Update();
         transform.position += movementVector * Time.deltaTime;
     }
 

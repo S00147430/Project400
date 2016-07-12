@@ -3,10 +3,10 @@ using System.Collections;
 
 public class BaseEnemy : MonoBehaviour
 {
-    public bool IsInvincible = false; //bool for rolling stone and similar enemies that do not react in any way to crash. Different to being immune to jump and spin attack, in that it prevents movement response.
+    public bool IsInvincible = false; //bool for enemies which are immune to crash, period. Bypasses death and damage checks.
     public bool IsImmuneJump = false;
     public bool IsImmuneSpin = false;
-    public bool IsDead = false;// Note: This value is temporary, and just so future testing of death mechanics can be performed.
+    public bool IsDead = false;// Note: This value is half of death checking. if a culprit and a method cannot be found, the target will not be considered properly dead.
     public int HitPoints;
     enum DiedBy { SPIN, JUMP, IAINTDEAD } //Death from spinning takes priority, so if spun from above, take spin as cause.
     DiedBy diedFrom;
@@ -68,7 +68,7 @@ public class BaseEnemy : MonoBehaviour
                 }
             }
 
-            if (spunOut == false && jumpedOn == false)
+            if (spunOut == false && jumpedOn == false && IsInvincible == false)
             {
                 thisCrash.Damaged(gameObject);
             }

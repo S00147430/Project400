@@ -35,6 +35,8 @@ public class MarchEnemy : BaseEnemy {
     //a lot simpler than what I was trying to do initially.
     //  We'll see if it's *actually* that simple.
 
+    enum DeathType { STILLLIVING, JUMP, SPIN }
+    DeathType mannerOfDeath;
     public float CustomVectorX = 0;
     public float CustomVectorY = 0;
     public float CustomVectorZ = 0; // Values are assigned in the inspector, set to 0 here for safety
@@ -42,11 +44,12 @@ public class MarchEnemy : BaseEnemy {
     public float SpeedMultiplier; // Movement is relatively slow, if more speed is required, set SpeedMultiplier to a value greater than 1.0f
     bool hasBeenSeen;
     Renderer marchEnemyRenderer;
+    GameObject thingKilledBy;
 
-	void Start ()
+    void Start ()
     {
-        //now I just need a way to keep him from doing anything until the camera sees/renders him
-        //harder than I though it would be to get that info and, conversely, do something with it
+        mannerOfDeath = DeathType.STILLLIVING;
+        base.Start();
         marchEnemyRenderer = GetComponent<Renderer>();
 
         CustomVector.x = CustomVectorX;
@@ -57,20 +60,65 @@ public class MarchEnemy : BaseEnemy {
 	// Update is called once per frame
 	void Update ()
     {
-        if (marchEnemyRenderer.isVisible) // this .isVisible bool was harder to get ahold of than necessary. I was using an outdated method of calling Renderer that no longer works, apparently.
+        base.Start();
+        
+        if (mannerOfDeath == DeathType.STILLLIVING)
         {
-            hasBeenSeen = true;
-        }
+            if (IsDead == true)
+            { Death(); }
 
-        if (hasBeenSeen) //only needs to be seen once. begins moving regardless if the player continues to observe or not.
-        {
-            transform.position += CustomVector * Time.deltaTime * SpeedMultiplier;
+            if (marchEnemyRenderer.isVisible) // this .isVisible bool was harder to get ahold of than necessary. I was using an outdated method of calling Renderer that no longer works, apparently.
+            {
+                hasBeenSeen = true;
+            }
+
+            if (hasBeenSeen) //only needs to be seen once. begins moving regardless if the player continues to observe or not.
+            {
+                transform.position += CustomVector * Time.deltaTime * SpeedMultiplier;
+            }
         }
-        // *Should* move the character along the vector. Whether it will behave in the manner I expect will be determined during testing.
-        // Update: Moves forward at ridiculous speed. * Time.deltaTime added.
-        // Update: Works. Does what I want it to do in a manner that I expect it to.
-        // Update: added if statement to check if the camera can see it yet, and I even put it in the correct place this time. Go me.
-        // Update: works. praise be to the debugging gods.
-        //Interaction with the player character goes here.
+        else if (mannerOfDeath == DeathType.JUMP)
+        {
+
+            for (int i = 10; i >= 0; i--)
+            {
+                transform.localScale -= new Vector3(1.0f, 1.0f, 1.0f);
+                if (i == 0)
+                    Destroy(gameObject);
+            }
+        }
+        else if (mannerOfDeath == DeathType.SPIN)
+        {
+            thingKilledBy = ReturnKilledBy();
+            transform.position += new Vector3(0.0f, 0.5f, -1.0f) * Time.deltaTime * 10;
+            if (Vector3.Distance(transform.position, thingKilledBy.transform.position) > 20)
+                Destroy(gameObject);
+        }
+    }
+
+    void Death()
+    {
+        if (ReturnKilledBy() != null)
+        {
+            if (ReturnDiedFrom() != "lol this ain't correct")
+            {
+                switch (ReturnDiedFrom())
+                {
+                    case "JUMP":
+                        mannerOfDeath = DeathType.JUMP;
+                        break;
+                    case "SPIN":
+                        mannerOfDeath = DeathType.SPIN;
+                        break;
+                    case "IAINTDEAD":
+                        Debug.Log("Error: Deceased enemy is not dead. Morticians stumped.");
+                        break;
+                }
+            }
+            else
+                Debug.Log("Error: Deceased enemy not killed by anything. Forensic teams baffled.");
+        }
+        else
+            Debug.Log("Error: Deceased enemy not killed by anyone. Detectives clueless, perhaps going out for a stiff drink later to forget the whole sordid affair.");
     }
 }

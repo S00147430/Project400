@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/TestEnemyTestScene.unity
+- path: Assets/Scenes/EnemyTestRollerScene.unity
   isLoaded: 1
   isActive: 1
