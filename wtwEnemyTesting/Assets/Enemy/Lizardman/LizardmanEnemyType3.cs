@@ -3,6 +3,10 @@ using System.Collections;
 
 public class LizardmanEnemyType3 : BaseEnemy
 {
+    enum DeathType { STILLLIVING, JUMP, SPIN }
+    DeathType mannerOfDeath;
+    GameObject thingKilledBy;
+
     public GameObject[] stopPoints;
     public int currentStopPoint;
     public float speed;
@@ -17,8 +21,10 @@ public class LizardmanEnemyType3 : BaseEnemy
     Direction currentDirection;
     Direction previousDirection;
 
-    void Start ()
+    public override void Start ()
     {
+        base.Start();
+
         currentDirection = Direction.FORWARD;
         
         lastTarget = stopPoints[currentStopPoint];
@@ -41,19 +47,44 @@ public class LizardmanEnemyType3 : BaseEnemy
         Debug.Log("Direction: " + currentDirection.ToString());
     }
 	
-	void Update ()
+	public override void Update ()
     {
-        if(timerSet == true)
+        base.Update();
+
+        if (mannerOfDeath == DeathType.STILLLIVING)
         {
-            pauseTime = 1.0f;
-            timerSet = false;
+            if (IsDead == true)
+            { Death(); }
+
+            if (timerSet == true)
+            {
+                pauseTime = 1.0f;
+                timerSet = false;
+            }
+
+            pauseTime -= Time.deltaTime;
+
+            if (pauseTime <= 0)
+                transform.position += targetVector * speed * Time.deltaTime;
         }
+        else if (mannerOfDeath == DeathType.JUMP)
+        {
 
-        pauseTime -= Time.deltaTime;
-
-        if (pauseTime <= 0)
-            transform.position += targetVector * speed * Time.deltaTime;
-	}
+            for (int i = 10; i >= 0; i--)
+            {
+                transform.localScale -= new Vector3(1.0f, 1.0f, 1.0f);
+                if (i == 0)
+                    Destroy(gameObject);
+            }
+        }
+        else if (mannerOfDeath == DeathType.SPIN)
+        {
+            thingKilledBy = ReturnKilledBy();
+            transform.position += new Vector3(0.0f, 0.5f, -1.0f) * Time.deltaTime * 10;
+            if (Vector3.Distance(transform.position, thingKilledBy.transform.position) > 20)
+                Destroy(gameObject);
+        }
+    }
 
     public void SetTarget(GameObject stopPoint)
     {
@@ -125,5 +156,31 @@ public class LizardmanEnemyType3 : BaseEnemy
     void SetTargetVector()
     {
         targetVector = target.transform.position - transform.position;
+    }
+
+    void Death()
+    {
+        if (ReturnKilledBy() != null)
+        {
+            if (ReturnDiedFrom() != "lol this ain't correct")
+            {
+                switch (ReturnDiedFrom())
+                {
+                    case "JUMP":
+                        mannerOfDeath = DeathType.JUMP;
+                        break;
+                    case "SPIN":
+                        mannerOfDeath = DeathType.SPIN;
+                        break;
+                    case "IAINTDEAD":
+                        Debug.Log("Error: Deceased enemy " + name + " is not dead. Morticians stumped.");
+                        break;
+                }
+            }
+            else
+                Debug.Log("Error: Deceased enemy " + name + " not killed by anything. Forensic teams baffled.");
+        }
+        else
+            Debug.Log("Error: Deceased enemy " + name + " not killed by anyone. Detectives clueless, perhaps going out for a stiff drink later to forget the whole sordid affair.");
     }
 }

@@ -14,7 +14,7 @@ public class RotateAimEnemy : BaseEnemy
 
     Vector3 fakePosition; // A vector3 created with only the targets y value.
 
-	public virtual void Start ()
+	public override void Start ()
     {
         base.Start();
 
@@ -30,7 +30,7 @@ public class RotateAimEnemy : BaseEnemy
         readyToFire = true;
 	}
 	
-	public virtual void Update ()
+	public override void Update ()
     {
         base.Update();
         if(target != null)

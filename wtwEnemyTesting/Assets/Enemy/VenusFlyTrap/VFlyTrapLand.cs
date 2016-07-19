@@ -19,7 +19,7 @@ public class VFlyTrapLand : BaseEnemy
 	
 	void Update ()
     {
-	    
+        base.Update();
 
         if (mannerOfDeath == DeathType.STILLLIVING)
         {
@@ -29,6 +29,7 @@ public class VFlyTrapLand : BaseEnemy
             if (Vector3.Distance(transform.position, target.transform.position) < distance)
             {
                 //Attack logic. Don't know what's going on with this just yet. Can't just damage Crash if he's within range. Needs to be dodgeable.
+                //Will be an animation, on-collision damage applied as normal. So this code won't have an effect until animations are possible
             }
         }
         else if (mannerOfDeath == DeathType.JUMP)
@@ -50,6 +51,11 @@ public class VFlyTrapLand : BaseEnemy
         }
     }
 
+    //void OnCollisonEnter(Collider other)
+    //{
+
+    //}
+
     void Death()
     {
         if (ReturnKilledBy() != null)
@@ -65,14 +71,14 @@ public class VFlyTrapLand : BaseEnemy
                         mannerOfDeath = DeathType.SPIN;
                         break;
                     case "IAINTDEAD":
-                        Debug.Log("Error: Deceased enemy is not dead. Morticians stumped.");
+                        Debug.Log("Error: Deceased enemy " + name + " is not dead. Morticians stumped.");
                         break;
                 }
             }
             else
-                Debug.Log("Error: Deceased enemy not killed by anything. Forensic teams baffled.");
+                Debug.Log("Error: Deceased enemy " + name + " not killed by anything. Forensic teams baffled.");
         }
         else
-            Debug.Log("Error: Deceased enemy not killed by anyone. Detectives clueless, perhaps going out for a stiff drink later to forget the whole sordid affair.");
+            Debug.Log("Error: Deceased enemy " + name + " not killed by anyone. Detectives clueless, perhaps going out for a stiff drink later to forget the whole sordid affair.");
     }
 }

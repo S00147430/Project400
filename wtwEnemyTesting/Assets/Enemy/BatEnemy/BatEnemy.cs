@@ -16,13 +16,13 @@ public class BatEnemy : BaseEnemy
     //public float spawnRelativeXValue; // relative to the bat location, not relative to the worldspace
     public string ControllerName;
 
-	void Start ()
+	public override void Start ()
     {
         base.Start();
         spawnLocation = spawn.position;
 	}
 	
-	void Update ()
+	public override void Update ()
     {
         base.Update();
 

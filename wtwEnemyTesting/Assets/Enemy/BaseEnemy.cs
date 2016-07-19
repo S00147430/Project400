@@ -6,13 +6,16 @@ public class BaseEnemy : MonoBehaviour
     public bool IsInvincible = false; //bool for enemies which are immune to crash, period. Bypasses death and damage checks.
     public bool IsImmuneJump = false;
     public bool IsImmuneSpin = false;
+    public bool IsInvincibleSpin = false; //Introduced late in the game, this was created to facilitate 'undamaged but knocked back' reaction
+    public bool IsInvincibleJump = false; //for when jumping on the enemy makes crash bounce
     public bool IsDead = false;// Note: This value is half of death checking. if a culprit and a method cannot be found, the target will not be considered properly dead.
     public int HitPoints;
     enum DiedBy { SPIN, JUMP, IAINTDEAD } //Death from spinning takes priority, so if spun from above, take spin as cause.
     DiedBy diedFrom;
     GameObject killedBy;
     bool jumpedOn = false;
-    bool spunOut = false;
+    int spunOut = 0; // 0 = not, 1 = damaged by spin, 2 = knocked back
+    bool knockedBack = false;
     
 	public virtual void Start ()
     {
@@ -57,7 +60,7 @@ public class BaseEnemy : MonoBehaviour
                     if (thisCrash.IsSpinning() == true)
                     {
                         Debug.Log("Get SPUN SON!");
-                        spunOut = true;
+                        spunOut = 1;
                         HitPoints -= 1;
                         if (HitPoints <= 0)
                         {
@@ -66,14 +69,33 @@ public class BaseEnemy : MonoBehaviour
                         }
                     }
                 }
+
+                if (IsInvincibleSpin == true)
+                {
+                    if (thisCrash.IsSpinning() == true)
+                    {
+                        Debug.Log("Get SPUN SON!");
+                        spunOut = 2;
+                    }
+                }
             }
 
-            if (spunOut == false && jumpedOn == false && IsInvincible == false)
+            if (spunOut == 0 && jumpedOn == false && IsInvincible == false)
             {
                 thisCrash.Damaged(gameObject);
             }
 
-            spunOut = false;
+            if (IsInvincible == true)
+            {
+                thisCrash.Damaged(gameObject);
+            }
+
+            if(spunOut == 2)
+            {
+                //Crash Knockback is called here 
+            }
+
+            spunOut = 0;
             jumpedOn = false;
 
             //if(diedFrom == DiedBy.IAINTDEAD)
@@ -86,6 +108,17 @@ public class BaseEnemy : MonoBehaviour
     public GameObject ReturnKilledBy()
     {
         return killedBy;
+    }
+
+    public bool KnockedBack()
+    {
+        if (knockedBack == true)
+        {
+            knockedBack = false;
+            return true;
+        }
+        else
+            return false;
     }
 
     public string ReturnDiedFrom()

@@ -14,7 +14,7 @@ public class TestEnemy : BaseEnemy
         base.Update();
 	}
 
-    void OnCollisionEnter(Collision other)
+    public override void OnCollisionEnter(Collision other)
     {
         base.OnCollisionEnter(other);
     }

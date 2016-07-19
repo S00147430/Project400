@@ -60,7 +60,7 @@ public class MarchEnemy : BaseEnemy {
 	// Update is called once per frame
 	void Update ()
     {
-        base.Start();
+        base.Update();
         
         if (mannerOfDeath == DeathType.STILLLIVING)
         {

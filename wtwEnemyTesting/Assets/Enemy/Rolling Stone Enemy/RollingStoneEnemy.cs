@@ -10,7 +10,7 @@ public class RollingStoneEnemy : BaseEnemy {
     Vector3 movementVector;
 
 	// Use this for initialization
-	void Start ()
+	public override void Start ()
     {
         base.Start();
         IsInvincible = true;
@@ -27,7 +27,7 @@ public class RollingStoneEnemy : BaseEnemy {
     }
 
     // Update is called once per frame
-    void Update()
+    public override void Update()
     {
         base.Update();
         transform.position += movementVector * Time.deltaTime;

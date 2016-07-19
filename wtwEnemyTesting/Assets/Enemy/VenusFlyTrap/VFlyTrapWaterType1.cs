@@ -23,12 +23,21 @@ public class VFlyTrapWaterType1 : BaseEnemy
 	
 	void Update ()
     {
-	
+	    if(crashArrived == true)
+        {
+            biteDelay -= Time.deltaTime;
+            if(biteDelay <= 0)
+            {
+                //biteClose code/animation, contact damages Crash
+                crashArrived = false;
+                Debug.Log("CHOMP! - " + name);
+            }
+        }
 	}
 
     void OnTriggerEnter(Collider other)
     {
-        if(other == target)
+        if(other.gameObject == target)
         {
             biteDelay = 1.5f;
             crashArrived = true;

@@ -11,7 +11,7 @@ public class Type2PatrolEnemy : BaseEnemy
     public float speed;
     GameObject thingKilledBy;
 
-	void Start ()
+	public override void Start ()
     {
         mannerOfDeath = DeathType.STILLLIVING;
         base.Start();
@@ -22,7 +22,7 @@ public class Type2PatrolEnemy : BaseEnemy
         }
 	}
 	
-	void Update ()
+	public override void Update ()
     {
         base.Update();
 
@@ -86,14 +86,14 @@ public class Type2PatrolEnemy : BaseEnemy
                         mannerOfDeath = DeathType.SPIN;
                         break;
                     case "IAINTDEAD":
-                        Debug.Log("Error: Deceased enemy is not dead. Morticians stumped.");
+                        Debug.Log("Error: Deceased enemy " + name + " is not dead. Morticians stumped.");
                         break;
                 }
             }
             else
-                Debug.Log("Error: Deceased enemy not killed by anything. Forensic teams baffled.");
+                Debug.Log("Error: Deceased enemy " + name + " not killed by anything. Forensic teams baffled.");
         }
         else
-            Debug.Log("Error: Deceased enemy not killed by anyone. Detectives clueless, perhaps going out for a stiff drink later to forget the whole sordid affair.");
+            Debug.Log("Error: Deceased enemy " + name + " not killed by anyone. Detectives clueless, perhaps going out for a stiff drink later to forget the whole sordid affair.");
     }
 }
