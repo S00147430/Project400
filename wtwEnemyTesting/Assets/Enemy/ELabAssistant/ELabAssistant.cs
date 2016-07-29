@@ -36,37 +36,43 @@ public class ELabAssistant : BaseEnemy
             if (IsDead == true)
             { Death(); }
 
-            GetDistance();
-            if (distance < range)
+            if (KnockedBack() == true)
+            { KnockBack(); }
+
+            if(KnockedBack() == false)
             {
-                if (currentState == ShieldStates.INACTIVE)
+                GetDistance();
+                if (distance < range)
                 {
-                    shieldDownTime -= Time.deltaTime;
-                    IsInvincible = false;
-                    IsInvincibleSpin = true;
-                    GetVector();
-                    transform.position += targetVector * Time.deltaTime * speed;
-                }
+                    if (currentState == ShieldStates.INACTIVE)
+                    {
+                        shieldDownTime -= Time.deltaTime;
+                        IsInvincible = false;
+                        IsInvincibleSpin = true;
+                        GetVector();
+                        transform.position += targetVector * Time.deltaTime * speed;
+                    }
 
-                if (currentState == ShieldStates.ACTIVE)
-                {
-                    shieldTime -= Time.deltaTime;
-                    IsInvincible = true;
-                    IsInvincibleSpin = false;
-                }
+                    if (currentState == ShieldStates.ACTIVE)
+                    {
+                        shieldTime -= Time.deltaTime;
+                        IsInvincible = true;
+                        IsInvincibleSpin = false;
+                    }
 
-                if (shieldTime < 0)
-                {
-                    currentState = ShieldStates.INACTIVE;
-                    ResetShieldTime();
-                    Debug.Log("Shield deactivated");
-                }
+                    if (shieldTime < 0)
+                    {
+                        currentState = ShieldStates.INACTIVE;
+                        ResetShieldTime();
+                        Debug.Log("Shield deactivated");
+                    }
 
-                if (shieldDownTime < 0)
-                {
-                    currentState = ShieldStates.ACTIVE;
-                    ResetShieldDownTime();
-                    Debug.Log("Shield activated");
+                    if (shieldDownTime < 0)
+                    {
+                        currentState = ShieldStates.ACTIVE;
+                        ResetShieldDownTime();
+                        Debug.Log("Shield activated");
+                    }
                 }
             }
         }
@@ -133,5 +139,29 @@ public class ELabAssistant : BaseEnemy
         }
         else
             Debug.Log("Error: Deceased enemy " + name + " not killed by anyone. Detectives clueless, perhaps going out for a stiff drink later to forget the whole sordid affair.");
+    }
+
+    void KnockBack()
+    {
+        knockBackTime -= Time.deltaTime;
+        if (knockBackTime >= 0)
+        {
+            transform.position += new Vector3(0, 0, -3.0f) * Time.deltaTime * 2.0f;
+        }
+        else
+        {
+            KnockedBackDisable();
+            SetKnockbackTime(1.0f);
+        }
+            
+    }
+
+    public void PitDeath(GameObject pit)
+    {
+        if(pit.tag == "pit")
+        {
+            Debug.Log(name + " fell to his death.");
+            Destroy(gameObject);
+        }
     }
 }

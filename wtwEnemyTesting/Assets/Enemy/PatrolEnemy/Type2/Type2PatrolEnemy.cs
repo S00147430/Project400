@@ -31,10 +31,14 @@ public class Type2PatrolEnemy : BaseEnemy
             if (IsDead == true)
             { Death(); }
 
+            if (KnockedBack() == true)
+            { KnockBack(); }
+
             if (targetVector == null)
             { Debug.Log("Error: Target not set!"); }
 
-            transform.position += targetVector * Time.deltaTime * speed;
+            if(KnockedBack() == false)
+                transform.position += targetVector * Time.deltaTime * speed;
         }
         else if(mannerOfDeath == DeathType.JUMP)
         {
@@ -95,5 +99,16 @@ public class Type2PatrolEnemy : BaseEnemy
         }
         else
             Debug.Log("Error: Deceased enemy " + name + " not killed by anyone. Detectives clueless, perhaps going out for a stiff drink later to forget the whole sordid affair.");
+    }
+
+    void KnockBack()
+    {
+        knockBackTime -= Time.deltaTime;
+        if (knockBackTime >= 0)
+        {
+            transform.position += new Vector3(0, 0, -3.0f) * Time.deltaTime * 3.0f;
+        }
+        else
+            KnockedBackDisable();
     }
 }

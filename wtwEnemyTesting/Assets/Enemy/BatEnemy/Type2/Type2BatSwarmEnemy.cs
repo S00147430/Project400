@@ -29,7 +29,16 @@ public class Type2BatSwarmEnemy : BaseEnemy
         if (mannerOfDeath == DeathType.STILLLIVING)
         {
             if (IsDead == true)
-            { Death(); }
+            {
+                if(thingKilledBy != FinalSpawn.gameObject)
+                {
+                    Death();
+                }
+                else
+                {
+                    Destroy(gameObject);
+                }
+            }
 
             transform.position += currentTarget * Time.deltaTime;
         }
@@ -80,6 +89,7 @@ public class Type2BatSwarmEnemy : BaseEnemy
         if (FinalSpawn.name == SpawnName)
         {
             IsDead = true;
+            thingKilledBy = FinalSpawn.gameObject;
             return true;
         }
         else

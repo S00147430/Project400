@@ -46,7 +46,7 @@ public class MarchEnemy : BaseEnemy {
     Renderer marchEnemyRenderer;
     GameObject thingKilledBy;
 
-    void Start ()
+    public override void Start ()
     {
         mannerOfDeath = DeathType.STILLLIVING;
         base.Start();
@@ -58,7 +58,7 @@ public class MarchEnemy : BaseEnemy {
     }
 	
 	// Update is called once per frame
-	void Update ()
+	public override void Update ()
     {
         base.Update();
         
@@ -120,5 +120,14 @@ public class MarchEnemy : BaseEnemy {
         }
         else
             Debug.Log("Error: Deceased enemy not killed by anyone. Detectives clueless, perhaps going out for a stiff drink later to forget the whole sordid affair.");
+    }
+
+    public void PitDeath(GameObject pit)
+    {
+        if (pit.tag == "pit")
+        {
+            Debug.Log(name + " fell to his death.");
+            Destroy(gameObject);
+        }
     }
 }

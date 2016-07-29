@@ -6,8 +6,11 @@ public class BaseEnemy : MonoBehaviour
     public bool IsInvincible = false; //bool for enemies which are immune to crash, period. Bypasses death and damage checks.
     public bool IsImmuneJump = false;
     public bool IsImmuneSpin = false;
-    public bool IsInvincibleSpin = false; //Introduced late in the game, this was created to facilitate 'undamaged but knocked back' reaction
+    public bool IsInvincibleSpin = false; //For when spinning knocks back the enemy but does no damage
+    public bool IsInvincibleSpin2 = false;//For when spinning has no effect and Crash gets knocked back
+    public bool IsInvincibleSpin3 = false;//For when spinning means both parties are knocked back and no damage is applied
     public bool IsInvincibleJump = false; //for when jumping on the enemy makes crash bounce
+    public bool IsInvincibleJump2 = false;//for when the enemy can be walked on
     public bool IsDead = false;// Note: This value is half of death checking. if a culprit and a method cannot be found, the target will not be considered properly dead.
     public int HitPoints;
     enum DiedBy { SPIN, JUMP, IAINTDEAD } //Death from spinning takes priority, so if spun from above, take spin as cause.
@@ -16,11 +19,13 @@ public class BaseEnemy : MonoBehaviour
     bool jumpedOn = false;
     int spunOut = 0; // 0 = not, 1 = damaged by spin, 2 = knocked back
     bool knockedBack = false;
+    public float knockBackTime;
     
 	public virtual void Start ()
     {
         HitPoints = 1; //All enemies have just the one, if I remember correctly. If not, the number is easily changed in the child classes
         diedFrom = DiedBy.IAINTDEAD;
+        knockBackTime = 1.0f;
 	}
 	
 	public virtual void Update ()
@@ -74,25 +79,50 @@ public class BaseEnemy : MonoBehaviour
                 {
                     if (thisCrash.IsSpinning() == true)
                     {
-                        Debug.Log("Get SPUN SON!");
+                        Debug.Log("Get SPUN SON! (but don't die tho)");
                         spunOut = 2;
                     }
                 }
+
+                if (IsInvincibleSpin2 == true)
+                {
+                    if (thisCrash.IsSpinning() == true)
+                    {
+                        Debug.Log("DENIED!");
+                        thisCrash.KnockedBack(gameObject);
+                    }
+                }
+
+                if(IsInvincibleSpin3 == true)
+                {
+                    if(thisCrash.IsSpinning() == true)
+                    {
+                        Debug.Log("DENIED! (but get knocked back tho)");
+                        thisCrash.KnockedBack(gameObject);
+                        spunOut = 2;
+                    }
+                }
+
+                if (IsInvincibleJump && other.gameObject.transform.position.y >= transform.position.y)
+                {
+                    if(thisCrash.IsSpinning() == false)
+                        thisCrash.Bounce(gameObject);
+                }
+
+                if (IsInvincibleJump2 && other.gameObject.transform.position.y >= transform.position.y)
+                {
+
+                }
             }
 
-            if (spunOut == 0 && jumpedOn == false && IsInvincible == false)
-            {
-                thisCrash.Damaged(gameObject);
-            }
-
-            if (IsInvincible == true)
+            if (spunOut == 0 && jumpedOn == false || IsInvincible == true)
             {
                 thisCrash.Damaged(gameObject);
             }
 
             if(spunOut == 2)
             {
-                //Crash Knockback is called here 
+                knockedBack = true;
             }
 
             spunOut = 0;
@@ -110,11 +140,25 @@ public class BaseEnemy : MonoBehaviour
         return killedBy;
     }
 
+    public float ReturnKnockBackTime()
+    {
+        return knockBackTime;
+    }
+
+    public void SetKnockbackTime(float desiredTime)
+    {
+        knockBackTime = desiredTime;
+    }
+
+    public void KnockedBackDisable()
+    {
+        knockedBack = false;
+    }
+
     public bool KnockedBack()
     {
         if (knockedBack == true)
         {
-            knockedBack = false;
             return true;
         }
         else

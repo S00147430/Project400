@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/TestBeakerScene.unity
+- path: Assets/Scenes/TribesmanTestsScene.unity
   isLoaded: 1
   isActive: 1

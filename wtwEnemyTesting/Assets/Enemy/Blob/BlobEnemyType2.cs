@@ -12,6 +12,10 @@ public class BlobEnemyType2 : BaseEnemy
         lizard man, who also travels by jumping, but jumps to specific points instead of at Crash.
     */
 
+    enum DeathType { STILLLIVING, JUMP, SPIN }
+    DeathType mannerOfDeath;
+    GameObject thingKilledBy;
+
     enum BlobStates { LANDED, JUMPING }
     BlobStates currentState;
     GameObject target;
@@ -33,8 +37,10 @@ public class BlobEnemyType2 : BaseEnemy
     public float SpeedMultiplier;
     float groundDistance;
 
-    void Start ()
+    public override void Start ()
     {
+        base.Start();
+
         target = GameObject.FindGameObjectWithTag("crash");
         originalPosition = transform.position;
         originalXRotation = transform.rotation.x;
@@ -49,59 +55,92 @@ public class BlobEnemyType2 : BaseEnemy
         follow = false;
         groundDistance = GetComponent<Collider>().bounds.extents.y;
         waitTime = 1.0f;
+        
+        IsInvincibleSpin = true;
     }
 	
-	void Update ()
+	public override void Update ()
     {
-        if (Vector3.Distance(transform.position, target.transform.position) > FollowDistance)
+        base.Update();
+        
+        if (mannerOfDeath == DeathType.STILLLIVING)
         {
-            //Debug.Log("Out of Range");
-            follow = false;
-        }
+            if (IsDead == true)
+            { Death(); }
 
-        if (Vector3.Distance(transform.position, target.transform.position) <= FollowDistance)
-        {
-            //Debug.Log("Within Range");
-            follow = true;
-            
-        }
+            if (KnockedBack() == true)
+            { KnockBack(); }
 
-        if (follow == true)
-        {
-            if(IsGrounded())
+            if(KnockedBack() == false)
             {
-                //Debug.Log("Is on the ground");
-                originalPosition = transform.position;
-                ascending = true;
-                currentState = BlobStates.LANDED;
-                targetPosition = target.transform.position;
-                distanceTargetBlob = targetPosition - transform.position;
-            }
-
-            if(transform.position.y >= jumpHeight + originalPosition.y)
-            {
-                ascending = false;
-                //Debug.Log("Apex of Jump");
-            }
-
-            if(currentState == BlobStates.LANDED)
-            {
-                waitTime -= Time.deltaTime;
-                if(waitTime <= 0)
+                if (Vector3.Distance(transform.position, target.transform.position) > FollowDistance)
                 {
-                    waitTime = 1.0f;
-                    currentState = BlobStates.JUMPING;
-                    transform.position += distanceTargetBlob * Time.deltaTime * SpeedMultiplier;
-                    transform.position += jumpVector * Time.deltaTime * SpeedMultiplier;
+                    //Debug.Log("Out of Range");
+                    follow = false;
+                }
+
+                if (Vector3.Distance(transform.position, target.transform.position) <= FollowDistance)
+                {
+                    //Debug.Log("Within Range");
+                    follow = true;
+
+                }
+
+                if (follow == true)
+                {
+                    if (IsGrounded())
+                    {
+                        //Debug.Log("Is on the ground");
+                        originalPosition = transform.position;
+                        ascending = true;
+                        currentState = BlobStates.LANDED;
+                        targetPosition = target.transform.position;
+                        distanceTargetBlob = targetPosition - transform.position;
+                    }
+
+                    if (transform.position.y >= jumpHeight + originalPosition.y)
+                    {
+                        ascending = false;
+                        //Debug.Log("Apex of Jump");
+                    }
+
+                    if (currentState == BlobStates.LANDED)
+                    {
+                        waitTime -= Time.deltaTime;
+                        if (waitTime <= 0)
+                        {
+                            waitTime = 1.0f;
+                            currentState = BlobStates.JUMPING;
+                            transform.position += distanceTargetBlob * Time.deltaTime * SpeedMultiplier;
+                            transform.position += jumpVector * Time.deltaTime * SpeedMultiplier;
+                        }
+                    }
+
+                    if (currentState == BlobStates.JUMPING)
+                    {
+                        transform.position += distanceTargetBlob * Time.deltaTime * SpeedMultiplier;
+                        if (ascending == true)
+                            transform.position += jumpVector * Time.deltaTime * SpeedMultiplier;
+                    }
                 }
             }
+        }
+        else if (mannerOfDeath == DeathType.JUMP)
+        {
 
-            if(currentState == BlobStates.JUMPING)
+            for (int i = 10; i >= 0; i--)
             {
-                transform.position += distanceTargetBlob * Time.deltaTime * SpeedMultiplier;
-                if(ascending == true)
-                    transform.position += jumpVector * Time.deltaTime * SpeedMultiplier;
+                transform.localScale -= new Vector3(1.0f, 1.0f, 1.0f);
+                if (i == 0)
+                    Destroy(gameObject);
             }
+        }
+        else if (mannerOfDeath == DeathType.SPIN)
+        {
+            thingKilledBy = ReturnKilledBy();
+            transform.position += new Vector3(0.0f, 0.5f, -1.0f) * Time.deltaTime * 10;
+            if (Vector3.Distance(transform.position, thingKilledBy.transform.position) > 20)
+                Destroy(gameObject);
         }
     }
 
@@ -111,5 +150,54 @@ public class BlobEnemyType2 : BaseEnemy
             http://answers.unity3d.com/questions/196381/how-do-i-check-if-my-rigidbody-player-is-grounded.html
         #endregion
         return Physics.Raycast(transform.position, -Vector3.up, groundDistance + 0.1f);
+    }
+
+    void Death()
+    {
+        if (ReturnKilledBy() != null)
+        {
+            if (ReturnDiedFrom() != "lol this ain't correct")
+            {
+                switch (ReturnDiedFrom())
+                {
+                    case "JUMP":
+                        mannerOfDeath = DeathType.JUMP;
+                        break;
+                    case "SPIN":
+                        mannerOfDeath = DeathType.SPIN;
+                        break;
+                    case "IAINTDEAD":
+                        Debug.Log("Error: Deceased enemy " + name + " is not dead. Morticians stumped.");
+                        break;
+                }
+            }
+            else
+                Debug.Log("Error: Deceased enemy " + name + " not killed by anything. Forensic teams baffled.");
+        }
+        else
+            Debug.Log("Error: Deceased enemy " + name + " not killed by anyone. Detectives clueless, perhaps going out for a stiff drink later to forget the whole sordid affair.");
+    }
+
+    void KnockBack()
+    {
+        knockBackTime -= Time.deltaTime;
+        if (knockBackTime >= 0)
+        {
+            transform.position += Vector3.back * Time.deltaTime * 2.0f;
+        }
+        else
+        {
+            KnockedBackDisable();
+            SetKnockbackTime(1.0f);
+        }
+    }
+
+    public void PitDeath(GameObject pit)
+    {
+        if (pit.tag == "pit")
+        {
+            Debug.Log(name + " fell to his death.");
+            Destroy(gameObject);
+        }
     }
 }

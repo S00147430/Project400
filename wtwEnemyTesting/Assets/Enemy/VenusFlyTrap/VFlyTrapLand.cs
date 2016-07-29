@@ -6,18 +6,29 @@ public class VFlyTrapLand : BaseEnemy
     enum DeathType { STILLLIVING, JUMP, SPIN }
     DeathType mannerOfDeath;
     GameObject thingKilledBy;
-    GameObject target;
+
+    GameObject targetCrash;
     float distance;
 
-	void Start ()
+    Vector3 fakePosition; //used for rotation
+
+    enum EnemyState { NEUTRAL, BITING }
+    EnemyState currentState;
+
+    public override void Start ()
     {
         base.Start();
         mannerOfDeath = DeathType.STILLLIVING;
         distance = 2.0f;
-        target = GameObject.FindGameObjectWithTag("crash");
-	}
+        targetCrash = GameObject.FindGameObjectWithTag("crash");
+
+        if (targetCrash == null)
+        {
+            Debug.Log(name + " can't find Crash.");
+        }
+    }
 	
-	void Update ()
+	public override void Update ()
     {
         base.Update();
 
@@ -26,10 +37,19 @@ public class VFlyTrapLand : BaseEnemy
             if (IsDead == true)
             { Death(); }
 
-            if (Vector3.Distance(transform.position, target.transform.position) < distance)
+            if (Vector3.Distance(transform.position, targetCrash.transform.position) < distance)
             {
-                //Attack logic. Don't know what's going on with this just yet. Can't just damage Crash if he's within range. Needs to be dodgeable.
-                //Will be an animation, on-collision damage applied as normal. So this code won't have an effect until animations are possible
+                if(currentState == EnemyState.NEUTRAL)
+                {
+                    FaceCrash();
+                }
+                currentState = EnemyState.BITING;
+            }
+
+            if(currentState == EnemyState.BITING)
+            {
+                //Bite Animation
+                currentState = EnemyState.NEUTRAL;
             }
         }
         else if (mannerOfDeath == DeathType.JUMP)
@@ -55,6 +75,12 @@ public class VFlyTrapLand : BaseEnemy
     //{
 
     //}
+
+    void FaceCrash()
+    {
+        fakePosition = new Vector3(targetCrash.transform.position.x, transform.position.y, targetCrash.transform.position.z);
+        transform.LookAt(fakePosition);
+    }
 
     void Death()
     {

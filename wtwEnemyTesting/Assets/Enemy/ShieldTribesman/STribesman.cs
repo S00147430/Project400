@@ -54,38 +54,44 @@ public class STribesman : BaseEnemy
             if (IsDead == true)
             { Death(); }
 
-            if (Vector3.Distance(targetCrash.transform.position, transform.position) < 3)
+            if (KnockedBack() == true)
+            { KnockBack(); }
+
+            if (KnockedBack() == false)
             {
-                if (targetCrash.transform.position.y > transform.position.y)
+                if (Vector3.Distance(targetCrash.transform.position, transform.position) < 3)
                 {
-                    currentShieldState = ShieldState.UP;
-                    IsMoving = false;
+                    if (targetCrash.transform.position.y > transform.position.y)
+                    {
+                        currentShieldState = ShieldState.UP;
+                        IsMoving = false;
+                    }
+                    else
+                    {
+                        currentShieldState = ShieldState.FORWARD;
+                        IsMoving = false;
+                    }
                 }
                 else
                 {
-                    currentShieldState = ShieldState.FORWARD;
-                    IsMoving = false;
+                    IsMoving = true;
                 }
-            }
-            else
-            {
-                IsMoving = true;
-            }
 
-            if (currentShieldState == ShieldState.UP)
-            {
-                IsImmuneJump = true;
-                IsImmuneSpin = false;
-            }
-            else if (currentShieldState == ShieldState.FORWARD)
-            {
-                IsImmuneJump = false;
-                IsImmuneSpin = true;
-            }
+                if (currentShieldState == ShieldState.UP)
+                {
+                    IsImmuneJump = true;
+                    IsImmuneSpin = false;
+                }
+                else if (currentShieldState == ShieldState.FORWARD)
+                {
+                    IsImmuneJump = false;
+                    IsImmuneSpin = true;
+                }
 
-            if (IsMoving == true)
-            {
-                transform.position += movementVector * Time.deltaTime;
+                if (IsMoving == true)
+                {
+                    transform.position += movementVector * Time.deltaTime;
+                }
             }
         }
         else if (mannerOfDeath == DeathType.JUMP)
@@ -147,5 +153,19 @@ public class STribesman : BaseEnemy
         }
         else
             Debug.Log("Error: Deceased enemy " + name + " not killed by anyone. Detectives clueless, perhaps going out for a stiff drink later to forget the whole sordid affair.");
+    }
+
+    void KnockBack()
+    {
+        knockBackTime -= Time.deltaTime;
+        if (knockBackTime >= 0)
+        {
+            transform.position += new Vector3(0, 0, -3.0f) * Time.deltaTime * 3.0f;
+        }
+        else
+        {
+            KnockedBackDisable();
+            SetKnockbackTime(1.0f);
+        }
     }
 }

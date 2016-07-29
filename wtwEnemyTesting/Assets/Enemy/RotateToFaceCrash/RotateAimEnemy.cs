@@ -63,7 +63,7 @@ public class RotateAimEnemy : BaseEnemy
 
     void FaceCrash()
     {
-        Debug.Log("FaceCrash() Called!");
+        //Debug.Log("FaceCrash() Called!");
         //transform.LookAt(target.transform);
         //crashRotation = transform.rotation;
         //newRotation = new Quaternion(originalRotation.x, newRotation.y, originalRotation.z, originalRotation.w);

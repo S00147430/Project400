@@ -8,8 +8,10 @@ public class TestCrash : MonoBehaviour
     bool isInvincible;
     bool damaged;
     float damageTime;
+    float knockBackTime;
     float spinTime;
     Vector3 damageVector;
+    Vector3 knockBackVector;
     enum CrashStates { STANDING, JUMPING, WALKING, SPINNING }// none of these are going to be used in the actual crash, as Pauls final code will differ
     CrashStates currentState;
 
@@ -50,6 +52,11 @@ public class TestCrash : MonoBehaviour
             isInvincible = false;
         }
 
+        if (knockBackTime > 0)
+        {
+            transform.position += knockBackVector * Time.deltaTime * 2.0f;
+        }
+
         if (Input.GetKeyDown(KeyCode.X))
         {
             spinTime = 1.0f;
@@ -81,6 +88,30 @@ public class TestCrash : MonoBehaviour
         else
         {
             Debug.Log("Invincible! No Damage recieved from " + damagedBy.name + ".");
+        }
+    }
+
+    public void KnockedBack(GameObject knockedBackBy)
+    {
+        if (isInvincible == false)
+        {
+            knockBackTime = 2.0f;
+            knockBackVector = knockedBackBy.transform.position - transform.position;
+        }
+    }
+
+    public void Bounce(GameObject bouncedOn)
+    {
+        if(transform.position.y >= bouncedOn.transform.position.y)
+            transform.position += Vector3.up;
+    }
+
+    public void PitDeath(GameObject pit)
+    {
+        if(pit.tag == "pit")
+        {
+            Debug.Log("Whoa! (Crash is dead. Long live Crash.)");
+            //Destroy(gameObject);
         }
     }
 

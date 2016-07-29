@@ -115,7 +115,7 @@ public class MonkeyEnemy : BaseEnemy {
                                 transform.position = monkeyOriginalPos;
                                 pauseTime += 2.0f;
                                 current = MonkeyStates.NORMAL;
-                                IsImmuneSpin = false;
+                                IsInvincibleSpin3 = false;
                                 if (IsXAxis == true)
                                     monkeyVector.x = MonkeyDirectionValue; //(this one doesn't need to be inverted. messed that up the first time, had the monkey rolling off cliffs.
                                 else if (IsXAxis != true)
@@ -126,7 +126,7 @@ public class MonkeyEnemy : BaseEnemy {
                                 transform.position = monkeyDestinationPos;
                                 pauseTime += 2.0f;
                                 current = MonkeyStates.NORMAL;
-                                IsImmuneSpin = false;
+                                IsInvincibleSpin3 = false;
                                 if (IsXAxis == true)
                                     monkeyVector.x = MonkeyDirectionValue * -1; //(this is to make him roll the other way)
                                 else if (IsXAxis != true)
@@ -143,7 +143,7 @@ public class MonkeyEnemy : BaseEnemy {
                                 transform.position = monkeyOriginalPos;
                                 pauseTime += 2.0f;
                                 current = MonkeyStates.NORMAL;
-                                IsImmuneSpin = false;
+                                IsInvincibleSpin3 = false;
                                 monkeyVector.x = MonkeyDirectionValue;
                             }
                             else if (transform.position.x > monkeyDestinationPosValue)
@@ -151,7 +151,7 @@ public class MonkeyEnemy : BaseEnemy {
                                 transform.position = monkeyDestinationPos;
                                 pauseTime += 2.0f;
                                 current = MonkeyStates.NORMAL;
-                                IsImmuneSpin = false;
+                                IsInvincibleSpin3 = false;
                                 monkeyVector.x = MonkeyDirectionValue * -1;
                             }
                             break;
