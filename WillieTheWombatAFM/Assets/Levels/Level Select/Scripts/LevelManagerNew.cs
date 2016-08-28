@@ -9,6 +9,7 @@ public class LevelManagerNew : MonoBehaviour {
     [System.Serializable]
     public class Level
     {
+        public string Text;
         public string LevelText;
         public int Unlocked;
         public bool IsInteractable;       
@@ -70,7 +71,7 @@ public class LevelManagerNew : MonoBehaviour {
 
     void LoadLevels(string value)
     {
-        Application.LoadLevel(value);
+        Application.LoadLevelAsync(value);
     }
 
     void DeleteAll()
