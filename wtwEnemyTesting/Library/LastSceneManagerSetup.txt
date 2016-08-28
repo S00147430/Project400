@@ -1,0 +1,4 @@
+sceneSetups:
+- path: Assets/Scenes/TESTSCENES/CortexScene.unity
+  isLoaded: 1
+  isActive: 1
