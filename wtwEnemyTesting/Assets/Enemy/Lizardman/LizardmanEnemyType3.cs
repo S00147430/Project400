@@ -1,6 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*  It occurs to me that tthis is nearly impossible to set up without explanataion. the prefab this is attached to comes with four other prefabs in the same folder.
+    A StartPoint and End point, which mark where the lizardman starts jumping from, and where he stops to turn around respectively.
+    There is also Point1 and Point 2. Point1 is tagged as a JumpPoint, and when he hits it Lizard man is told he's jumped high enough and returns to the earth.
+    Point2 is tagged as a LandPoint, which tells Lizardman he's touched the ground, and so ascends once more.
+    You must create as many Jump and land points as necessary to get Lizard man from start point to end point, keeping in mind that the first and last points will be
+    StartPoint and Endpoint respectively,which will be on the ground.
+    Adjust the array size in the inspector until you have enough, then drop the points in in the order Lizard man is to travel them,
+    e.g: 0:Startpoint, 1:Point1, 2:Point2, 3:Point3, 4:Endpoint. Good luck, ask Pearce if you run into problems, you can both scream in abject fury together.*/
+
 public class LizardmanEnemyType3 : BaseEnemy
 {
     enum DeathType { STILLLIVING, JUMP, SPIN }

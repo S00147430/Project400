@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*  
+    Due to circumstances beyond our control, we will have to go ahead and use my 'Crash' in the presentation and final commit. This script is the only unique part of him,
+    the object this is attached to comes with Unity.
+*/
+
 public class TestCrash : MonoBehaviour
 {
     int hitPoints;
@@ -12,7 +17,7 @@ public class TestCrash : MonoBehaviour
     float spinTime;
     Vector3 damageVector;
     Vector3 knockBackVector;
-    enum CrashStates { STANDING, JUMPING, WALKING, SPINNING }// none of these are going to be used in the actual crash, as Pauls final code will differ
+    enum CrashStates { STANDING, JUMPING, WALKING, SPINNING }
     CrashStates currentState;
 
     void Start ()
@@ -69,7 +74,7 @@ public class TestCrash : MonoBehaviour
 
         else if(spinTime <= 0)
         {
-            currentState = CrashStates.STANDING; // all this is subject to change once Paul's code comes through
+            currentState = CrashStates.STANDING;
         }
 	}
 

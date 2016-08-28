@@ -16,11 +16,28 @@ public class DoctorCortexController : MonoBehaviour
 
     #region Declaring Blasts
     /* Add blast prefabs WITHOUT blast classes in the inspector. e.g for greenBlast, add a prefab with the proper parameters minus the CortexBlastGreen script. */
+    /* Because I'm not allowed to be happy ever this entire setup doesn't work so I'm going to have to change things so all the prefabs come with the scripts pre-attached */
     public GameObject greenBlast;
+    public GameObject greenBlastCluster;
+    public GameObject greenBlastGreenTarget; // should be the same as the greenBlast, will have hardcoded changes made later
     public GameObject blueBlast;
+    public GameObject blueBlastUL;
+    public GameObject blueBlastUR;
+    public GameObject blueBlastLL;
+    public GameObject blueBlastLR;
+    public GameObject blueBlastTL;
+    public GameObject blueBlastTR;
+    public GameObject blueBlastBL;
+    public GameObject blueBlastBR;
     public GameObject pinkBlast;
+    public GameObject pinkBlastTarget1;
+    public GameObject pinkBlastTarget2;
+    public GameObject pinkBlastTarget3; // All the same as pink blast, hardcode changes below
+    public GameObject pinkBlastTarget4;
+    public GameObject pinkBlastTarget5;
 
-        /* The Blast Cluster is added in the same way: Everything but the CortexBlastCluster class. Must be a trigger. */
+    /* The Blast Cluster is added in the same way: Everything but the CortexBlastCluster class. Must be a trigger. */
+    /* Same as above,the class has to be attached now. */
     public GameObject blastCluster;
 
         /* Individual blasts are declared. */
@@ -35,7 +52,6 @@ public class DoctorCortexController : MonoBehaviour
     GameObject volley2Blast5;
     GameObject volley2Blast6;
     GameObject volley2Blast7;
-    GameObject volley2BlastCluster;
 
     GameObject volley3Blast1;
     GameObject volley3Blast2;
@@ -47,7 +63,6 @@ public class DoctorCortexController : MonoBehaviour
     GameObject volley3Blast8;
     GameObject volley3Blast9;
     GameObject volley3Blast10;
-    GameObject volley3BlastCluster;
 
     GameObject volley4Blast1;
     GameObject volley4Blast2;
@@ -55,7 +70,6 @@ public class DoctorCortexController : MonoBehaviour
     GameObject volley4Blast4;
     GameObject volley4Blast5;
     GameObject volley4Blast6;
-    GameObject volley4BlastCluster;
 
     GameObject volley5Blast1;
     #endregion Declaring Blasts
@@ -105,81 +119,46 @@ public class DoctorCortexController : MonoBehaviour
 
         #region Defining Blasts
         volley1Blast1 = pinkBlast;
-        volley1Blast1.AddComponent<CortexBlastPink>();
         volley1Blast2 = pinkBlast;
-        volley1Blast2.AddComponent<CortexBlastPink>();
         volley1Blast3 = greenBlast;
-        volley1Blast3.AddComponent<CortexBlastGreen>();
 
         volley2Blast1 = pinkBlast;
-        volley2Blast1.AddComponent<CortexBlastPink>();
         volley2Blast2 = blueBlast;
-        volley2Blast2.AddComponent<CortexBlastBlue>();
         volley2Blast3 = pinkBlast;
-        volley2Blast3.AddComponent<CortexBlastPink>();
         volley2Blast4 = blueBlast;
-        volley2Blast4.AddComponent<CortexBlastBlue>();
         volley2Blast5 = blueBlast;
-        volley2Blast5.AddComponent<CortexBlastBlue>();
-        volley2Blast6 = greenBlast;
-        volley2Blast6.AddComponent<CortexBlastGreen>();
+        volley2Blast6 = greenBlastCluster;
         volley2Blast6.GetComponent<CortexBlastGreen>().SetReflectTarget(ClusterSpawnPosition);
-        volley2Blast7 = greenBlast;
-        volley2Blast7.AddComponent<CortexBlastGreen>();
-        volley2Blast7.GetComponent<CortexBlastGreen>().SetReflectTarget(ClusterSpawnPosition);
-        volley2BlastCluster = blastCluster;
-        volley2BlastCluster.AddComponent<CortexBlastCluster>();
-        volley2BlastCluster.GetComponent<CortexBlastCluster>().SetCapacity(2);
+        volley2Blast7 = greenBlastCluster;
+        blastCluster.GetComponent<CortexBlastCluster>().SetCapacity(2);
 
         volley3Blast1 = pinkBlast;
-        volley3Blast1.AddComponent<CortexBlastPink>();
         volley3Blast2 = blueBlast;
-        volley3Blast2.AddComponent<CortexBlastBlue>();
         volley3Blast3 = blueBlast;
-        volley3Blast3.AddComponent<CortexBlastBlue>();
         volley3Blast4 = pinkBlast;
-        volley3Blast4.AddComponent<CortexBlastPink>();
-        volley3Blast5 = greenBlast;
-        volley3Blast5.AddComponent<CortexBlastGreen>();
-        volley3Blast5.GetComponent<CortexBlastGreen>().SetReflectTarget(ClusterSpawnPosition);
+        volley3Blast5 = greenBlastCluster;
         volley3Blast6 = pinkBlast;
-        volley3Blast6.AddComponent<CortexBlastPink>();
         volley3Blast7 = blueBlast;
-        volley3Blast7.AddComponent<CortexBlastBlue>();
         volley3Blast8 = blueBlast;
-        volley3Blast8.AddComponent<CortexBlastBlue>();
-        volley3Blast9 = greenBlast;
-        volley3Blast9.AddComponent<CortexBlastGreen>();
-        volley3Blast9.GetComponent<CortexBlastGreen>().SetReflectTarget(ClusterSpawnPosition);
-        volley3Blast10 = greenBlast;
-        volley3Blast10.AddComponent<CortexBlastGreen>();
-        volley3Blast10.GetComponent<CortexBlastGreen>().SetReflectTarget(ClusterSpawnPosition);
-        volley3BlastCluster.AddComponent<CortexBlastCluster>();
-        volley3BlastCluster.GetComponent<CortexBlastCluster>().SetCapacity(3);
+        volley3Blast9 = greenBlastCluster;
+        volley3Blast10 = greenBlastCluster;
+        blastCluster.GetComponent<CortexBlastCluster>().SetCapacity(3);
 
-        volley4Blast1 = pinkBlast;
-        volley4Blast1.AddComponent<CortexBlastPink>();
+        volley4Blast1 = pinkBlastTarget1;
         volley4Blast1.GetComponent<CortexBlastPink>().SetTarget(PinkTarget1);
-        volley4Blast2 = pinkBlast;
-        volley4Blast2.AddComponent<CortexBlastPink>();
+        volley4Blast2 = pinkBlastTarget2;
         volley4Blast2.GetComponent<CortexBlastPink>().SetTarget(PinkTarget2);
-        volley4Blast3 = pinkBlast;
-        volley4Blast3.AddComponent<CortexBlastPink>();
+        volley4Blast3 = pinkBlastTarget3;
         volley4Blast3.GetComponent<CortexBlastPink>().SetTarget(PinkTarget3);
-        volley4Blast4 = pinkBlast;
-        volley4Blast4.AddComponent<CortexBlastPink>();
+        volley4Blast4 = pinkBlastTarget4;
         volley4Blast4.GetComponent<CortexBlastPink>().SetTarget(PinkTarget4);
-        volley4Blast5 = pinkBlast;
-        volley4Blast5.AddComponent<CortexBlastPink>();
+        volley4Blast5 = pinkBlastTarget5;
         volley4Blast5.GetComponent<CortexBlastPink>().SetTarget(PinkTarget5);
-        volley4Blast6 = greenBlast;
-        volley4Blast6.AddComponent<CortexBlastGreen>();
+        volley4Blast6 = greenBlastGreenTarget;
         volley4Blast6.GetComponent<CortexBlastGreen>().SetTarget(GreenTarget);
-        volley4BlastCluster.AddComponent<CortexBlastCluster>();
-        volley4BlastCluster.GetComponent<CortexBlastCluster>().SetCapacity(2);
+        blastCluster.GetComponent<CortexBlastCluster>().SetCapacity(2);
 
         volley5Blast1 = greenBlast;
-        volley5Blast1.AddComponent<CortexBlastGreen>();
         #endregion Defining Blasts
 
         #region Defining Arrays
@@ -220,12 +199,12 @@ public class DoctorCortexController : MonoBehaviour
         Volley5 = new GameObject[1];
         Volley5[0] = volley5Blast1;
 
-        GameObject[][] volleys =
-        {   Volley1,
-            Volley2,
-            Volley3,
-            Volley4,
-            Volley5   };
+        Volleys = new GameObject[5][];
+        Volleys[0] = Volley1;
+        Volleys[1] = Volley2;
+        Volleys[2] = Volley3;
+        Volleys[3] = Volley4;
+        Volleys[4] = Volley5;
         #endregion Defining Arrays
     }
 	
@@ -236,28 +215,34 @@ public class DoctorCortexController : MonoBehaviour
 
     public GameObject[] RequestNextWave(GameObject[] currentWave)
     {
-        if (currentWave == null)
+        
+        if (currentWave == null || currentWave.Length == 0)
         {
-            return Volleys[0];
+            //return Volleys[0];
+            return Volley1;
         }
         else if(currentWave == Volleys[0])
         {
-            InstantiateCluster(volley2BlastCluster);
-            return Volleys[1];
+            InstantiateCluster(blastCluster);
+            //return Volleys[1];
+            return Volley2;
         }
         else if(currentWave == Volleys[1])
         {
-            InstantiateCluster(volley3BlastCluster);
-            return Volleys[2];
+            InstantiateCluster(blastCluster);
+            //return Volleys[2];
+            return Volley3;
         }
         else if (currentWave == Volleys[2])
         {
-            InstantiateCluster(volley4BlastCluster);
-            return Volleys[3];
+            InstantiateCluster(blastCluster);
+            //return Volleys[3];
+            return Volley4;
         }
         else if (currentWave == Volleys[3])
         {
-            return Volleys[4];
+            //return Volleys[4];
+            return Volley5;
         }
         else
         {

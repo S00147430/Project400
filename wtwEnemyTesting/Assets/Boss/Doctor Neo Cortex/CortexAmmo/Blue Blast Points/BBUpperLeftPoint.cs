@@ -6,11 +6,19 @@ public class BBUpperLeftPoint : MonoBehaviour
 
     void Start()
     {
-        tag = "BlueBlastPointUL";
+        tag = "BlastPointUL";
     }
 
     void Update()
     {
 
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<CortexBlastBlue>() != null)
+        {
+            other.GetComponent<CortexBlastBlue>().SetTargetVector(gameObject);
+        }
     }
 }

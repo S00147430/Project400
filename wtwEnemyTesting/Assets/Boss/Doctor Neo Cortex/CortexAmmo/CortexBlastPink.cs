@@ -33,6 +33,7 @@ public class CortexBlastPink : MonoBehaviour
         }
 
         transform.position += targetVector * Time.deltaTime;
+        CheckDistance();
     }
 
     void OnCollisionEnter(Collision other)
@@ -47,5 +48,13 @@ public class CortexBlastPink : MonoBehaviour
     {
         targetVector = targetToBeSet.position - transform.position;
         targetSet = true;
+    }
+
+    void CheckDistance()
+    {
+        if (Vector3.Distance(transform.position, targetVector) > 30)
+        {
+            Destroy(gameObject);
+        }
     }
 }

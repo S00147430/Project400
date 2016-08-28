@@ -14,14 +14,14 @@ public class VFlyTrapWaterType1 : BaseEnemy
     float biteDelay;
     bool crashArrived = false;
     
-    void Start ()
+    public override void Start ()
     {
         base.Start();
         mannerOfDeath = DeathType.STILLLIVING;
         target = GameObject.FindGameObjectWithTag("crash");
     }
-	
-	void Update ()
+
+    public override void Update ()
     {
 	    if(crashArrived == true)
         {

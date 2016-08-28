@@ -6,7 +6,6 @@ public class BeakerProjectile : MonoBehaviour
     Vector3 target;
     bool targetReached;
     bool targetSet;
-    public float speed;
 
 	void Start ()
     {
@@ -19,7 +18,7 @@ public class BeakerProjectile : MonoBehaviour
         {
             if (targetReached == false)
             {
-                transform.position += target * speed * Time.deltaTime;
+                transform.position += target * 2.0f * Time.deltaTime;
             }
 
             if (transform.position == target)
@@ -45,6 +44,5 @@ public class BeakerProjectile : MonoBehaviour
     {
         target = aimingFor - aimingFrom;
         targetSet = true;
-        speed = desiredSpeed;
     }
 }
